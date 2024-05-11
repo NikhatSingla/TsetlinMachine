@@ -172,7 +172,7 @@ class Machine:
             for i in data:
                 self.train(i[1], i[0])
             testResults = self.testOnData(data)
-            print(f"Compteted epoch-{j + 1} with accuracy {testResults[0] * 100 / (testResults[0] + testResults[1])}")
+            print(f"Completed epoch-{j + 1} with accuracy {testResults[0] * 100 / (testResults[0] + testResults[1])}")
 
 
 class MNIST:
