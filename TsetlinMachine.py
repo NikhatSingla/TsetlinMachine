@@ -15,37 +15,47 @@ class Clause:
         self.forgettingRate = 1 - learningRate
 
         self.states = np.ones(self.noOfLiterals) * self.cutOff
+        for i in range(self.noOfLiterals):
+            if (self.rand() >= 0.5):
+                self.states[i] += 1
+            else:
+                self.states[i] -= 1
 
     def getOutput(self, input): #gives clause output as 0 or 1 depending on input, a numpy array of booleanised value of features
         return np.logical_and.reduce(np.where(self.states > self.cutOff, input, np.ones(self.noOfLiterals)))
-    
-    def recognizeFeedback(self, input): #input is a numpy array of booleanised value of features
-        for i in range(len(self.states)):
-            if (input[i] == 0): #needs decrement
-                if (self.rand() < self.forgettingRate): #perform the decrement
-                    if (self.states[i] >= 2):
-                        self.states[i] -= 1
-            elif (input[i] == 1): #needs increment
-                if (self.rand() < self.learningRate): #perform the increment
-                    if (self.states[i] <= self.maxState - 1):
-                        self.states[i] += 1
 
-    def eraseFeedback(self, input): #input is a numpy array of booleanised value of features
-        for i in range(len(self.states)):
-            if (self.rand() < self.forgettingRate):
-                if (self.states[i] >= 2):
-                    self.states[i] -= 1
+    def s1(self):
+        return (self.rand() <= learningRate)
     
+    def s2(self):
+        return (self.rand() <= (1 - learningRate))
+
     def typeIFeedback(self, input):
-        if (self.getOutput(input)):
-            self.recognizeFeedback(input)
-        else:
-            self.eraseFeedback(input)
+        if (self.getOutput(input)): #if clause output is 1
+            for i in range(self.noOfLiterals): #run through all the literals
+                if(input[i]): #if i-th literal is 1
+                    if(self.s2()): #if s2 is true
+                        if(self.states[i] < maxState): #increment the i-th state if less than maxState
+                            self.states[i] += 1
+                else: #if i-th literal is 0
+                    if(self.s1()): #if s1 is true
+                        if(self.states[i] > 1): #decrement the i-th state if greater than 1
+                            self.states[i] -= 1
+        else: #if clause output is 0
+            for i in range(self.noOfLiterals):
+                if(self.s1()):
+                    if(self.states[i] > 1): #decrement the i-th state if greater than 1
+                        self.states[i] -= 1
 
     def typeIIFeedback(self, input):
-        for i in range(len(self.states)):
-            if ((self.states[i] <= self.cutOff) and (self.states[i] >= 2) and (input[i] == 0)):
-                self.states[i] += 1
+        if (self.getOutput(input)):
+            for i in range(self.noOfLiterals):
+                if (input[i]):
+                    pass
+                else:
+                    if (self.states[i] <= self.cutOff):
+                        if (self.states[i] < maxState):
+                            self.states[i] += 1
             
 class TM:
     def __init__(self, noOfClauses, noOfFeatures, learningRate, maxState, T):
@@ -198,11 +208,11 @@ class MNIST:
 epochs = 10
 threshold = 10
 classes = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
-noOfClauses = 10
+noOfClauses = 200
 noOfFeatures = 784
-learningRate = 0.5
+learningRate = 1/7.5
 maxState = 400
-T = 1
+T = 10
 
 myMNIST = MNIST(epochs, threshold, classes, noOfClauses, noOfFeatures, learningRate, maxState, T)
 myMNIST.trainAndTest()
