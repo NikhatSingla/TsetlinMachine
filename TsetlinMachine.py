@@ -162,7 +162,7 @@ class Machine:
             for i in data:
                 self.train(i[1], i[0])
             testResults = self.testOnData(data)
-            print(f"Compteted epoch-{j + 1} with accuracy {testResults[0] * 100 / (testResults[0] + testResults[0])}")
+            print(f"Compteted epoch-{j + 1} with accuracy {testResults[0] * 100 / (testResults[0] + testResults[1])}")
 
 
 class MNIST:
@@ -198,11 +198,11 @@ class MNIST:
 epochs = 10
 threshold = 10
 classes = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
-noOfClauses = 100
+noOfClauses = 10
 noOfFeatures = 784
 learningRate = 0.5
 maxState = 400
-T = 10
+T = 1
 
 myMNIST = MNIST(epochs, threshold, classes, noOfClauses, noOfFeatures, learningRate, maxState, T)
 myMNIST.trainAndTest()
