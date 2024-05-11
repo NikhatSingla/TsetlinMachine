@@ -15,18 +15,11 @@ class Clause:
         self.forgettingRate = 1 - learningRate
 
         self.states = np.ones(self.noOfLiterals) * self.cutOff
-    
-    def featuresToLiterals(self, input): #converts a numpy feature array to a numpy literals array
-        input = (np.array([input,(input ^ True)]).T).reshape(self.noOfLiterals) #converts input into numpy array of literals
-        return input
 
     def getOutput(self, input): #gives clause output as 0 or 1 depending on input, a numpy array of booleanised value of features
-        input = self.featuresToLiterals(input)
         return np.logical_and.reduce(np.where(self.states > self.cutOff, input, np.ones(self.noOfLiterals)))
     
     def recognizeFeedback(self, input): #input is a numpy array of booleanised value of features
-        input = self.featuresToLiterals(input)
-
         for i in range(len(self.states)):
             if (input[i] == 0): #needs decrement
                 if (self.rand() < self.forgettingRate): #perform the decrement
@@ -38,24 +31,18 @@ class Clause:
                         self.states[i] += 1
 
     def eraseFeedback(self, input): #input is a numpy array of booleanised value of features
-        input = self.featuresToLiterals(input)
-
         for i in range(len(self.states)):
             if (self.rand() < self.forgettingRate):
                 if (self.states[i] >= 2):
                     self.states[i] -= 1
     
     def typeIFeedback(self, input):
-        input = self.featuresToLiterals(input)
-
         if (self.getOutput(input)):
             self.recognizeFeedback(input)
         else:
             self.eraseFeedback(input)
 
     def typeIIFeedback(self, input):
-        input = self.featuresToLiterals(input)
-
         for i in range(len(self.states)):
             if ((self.states[i] <= self.cutOff) and (self.states[i] >= 2) and (input[i] == 0)):
                 self.states[i] += 1
@@ -189,7 +176,8 @@ class MNIST:
             stream = reader(f)
             data = []
             for i in stream:
-                data.append([int(i[0]), np.array([(int(a) > threshold) for a in i[1:]])])
+                input = np.array([(int(a) > threshold) for a in i[1:]])
+                data.append([int(i[0]), (np.array([input,(input^True)]).T).reshape(noOfFeatures*2)])
         self.data = data
 
         with open("sample_data/mnist_train_small.csv") as f:
@@ -197,7 +185,8 @@ class MNIST:
             stream = reader(f)
             dataTest = []
             for i in stream:
-                dataTest.append([int(i[0]), np.array([(int(a) > threshold) for a in i[1:]])])
+                input = np.array([(int(a) > threshold) for a in i[1:]])
+                dataTest.append([int(i[0]), (np.array([input,(input^True)]).T).reshape(noOfFeatures*2)])
         self.testingData = dataTest
     
     def trainAndTest(self):
