@@ -18,7 +18,6 @@ int noOfEpochs = 10;
 int clausesPerComponent = 200;
 int noOfFeatures = 784;
 int noOfLiterals = noOfFeatures * 2;
-int intSize = sizeof(int);
 
 class Clause
 {
