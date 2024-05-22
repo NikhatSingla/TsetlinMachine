@@ -1,6 +1,3 @@
-#include <iomanip>
-#include <ios>
-
 #include <iostream>
 #include <vector>
 #include <cstdlib>
@@ -423,15 +420,15 @@ int main()
     }
 
     //test machine and print accuracy
-    cout << "Testing the machine..." << endl;
-    cout << "Accuracy is " << MNIST.testMachine(testing_data, testing_labels);
+    cout << "Completed all epochs, now testing the machine on test data." << endl;
+    cout << "Accuracy on test data is " << MNIST.testMachine(testing_data, testing_labels);
     cout << endl;
 
     clock_t end = clock(); //initialise the end time to meausure program runtime
 
     //calculate time taken to run the program and print to std::cout
     double timeTaken = double(end - start) / CLOCKS_PER_SEC;
-    cout << "Time taken (in seconds) is " << timeTaken; 
+    cout << "Time taken (in seconds) is " << timeTaken << endl; 
 
     //debugging
     //
