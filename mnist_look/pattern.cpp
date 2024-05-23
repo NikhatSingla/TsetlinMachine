@@ -68,8 +68,8 @@ void write(string s, string filepath)
 
 int main()
 {
-    write(read("sample_data/mnist_train_small.csv"), "/media/virinder/New Volume/Nikhat/TsetlinMachine/mnist_look/TrainData.txt");
-    write(read("sample_data/mnist_test.csv"), "/media/virinder/New Volume/Nikhat/TsetlinMachine/mnist_look/TestData.txt");
+    write(read("../sample_data/mnist_train_small.csv"), "/media/virinder/New Volume/Nikhat/TsetlinMachine/mnist_look/TrainData.txt");
+    write(read("../sample_data/mnist_test.csv"), "/media/virinder/New Volume/Nikhat/TsetlinMachine/mnist_look/TestData.txt");
 
     return 0;
 }
