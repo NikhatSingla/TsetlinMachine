@@ -10,8 +10,8 @@ using namespace std;
 //this part of program is to be changed with each data set
 
 //filepaths
-string filePathTrain = "/media/virinder/New Volume/Nikhat/TsetlinMachine/sample_data/mnist_train_small.csv";
-string filePathTest = "/media/virinder/New Volume/Nikhat/TsetlinMachine/sample_data/mnist_test.csv";
+string filePathTrain = "/mnt/7E7A652E7A64E3FD/Nikhat/TsetlinMachine/sample_data/mnist_train_small.csv";
+string filePathTest = "/mnt/7E7A652E7A64E3FD/Nikhat/TsetlinMachine/sample_data/mnist_test.csv";
 
 //number of training and testing samples
 long long int noOfTrainingSamples = 20000;
@@ -476,6 +476,9 @@ int main()
     while (test);
 
     /*
+
+
+    
     //user testing
     int test;
     do
